@@ -1,10 +1,23 @@
 <template>
-  <div class="flex flex-row">
+  <div class="relative">
     <!-- Sidebar -->
     <aside
-      class="px-4 hidden lg:block flex-shrink-0 w-64 text-gray-200 bg-gray-800"
+      :class="sidebar ? 'translate-x-0' : '-translate-x-full'"
+      class="
+        transition
+        inset-y-0
+        lg:translate-x-0
+        px-4
+        fixed
+        left-0
+        z-30
+        w-64
+        text-gray-200
+        bg-gray-800
+        overflow-auto
+      "
     >
-      <div>
+      <div class="flex items-center justify-between">
         <h2 class="py-2 flex items-center text-3xl text-white font-semibold">
           <span>
             <svg
@@ -21,8 +34,22 @@
               />
             </svg>
           </span>
-          <span>Dash</span>
+          <span>Dashboard</span>
         </h2>
+        <button v-show="sidebar" @click="sidebar = false">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
       </div>
       <div
         class="
@@ -361,7 +388,9 @@
     </aside>
     <!-- end-sidebar -->
     <!-- main-container -->
-    <div class="flex flex-col flex-1 h-ful">
+    <div
+      class="fixed left-0 lg:left-[256px] top-0 right-0 flex flex-col h-full"
+    >
       <!-- top-menu -->
       <header class="relative z-10 bg-white flex-shrink-0 border-b shadow">
         <div class="flex items-center justify-between p-2">
@@ -376,9 +405,9 @@
                 uppercase
                 lg:hidden
               "
-              >ABC</span
+              >Dashboard</span
             >
-            <span>
+            <button class="lg:hidden" @click="showSidebar">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5 text-gray-500"
@@ -391,7 +420,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-            </span>
+            </button>
           </div>
           <!-- end-alt-site-title and menu-toggle-icon -->
 
@@ -935,3 +964,24 @@
     <!-- end-main-container -->
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      sidebar: false,
+    };
+  },
+  methods: {
+    getWindowWidth() {
+      return (
+        window.innerWidth ||
+        document.documentElement.clientWidth ||
+        document.body.clientWidth
+      );
+    },
+    showSidebar() {
+      return (this.sidebar = !this.sidebar);
+    },
+  },
+};
+</script>
